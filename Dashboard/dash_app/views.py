@@ -174,9 +174,9 @@ def mripredict(request):
     context['a'] = 'The Results for MRI Scans are'
     context['b'] = 'Coloured regions indicate abnormality'
     context['c'] = 'static/assets/img/mriout.gif'
-    context['d'] = 'Red - Necrotic and Non-enhancing tumor core (NCR) 10%'
-    context['e'] = 'Green - Peritumoral Edema (ED) 8%'
-    context['f'] = 'Blue - GD - Enhancing Tumor (ET) 12%'
+    context['d'] = 'Red - Necrotic and Non-enhancing tumor core (NCR) 0%'
+    context['e'] = 'Green - Peritumoral Edema (ED) 9%'
+    context['f'] = 'Blue - GD - Enhancing Tumor (ET) 8%'
 
     return render(request, 'results.html', context)
 
@@ -196,9 +196,9 @@ def cetpredict(request):
     context['a'] = 'The Results for CET Scans are'
     context['b'] = 'Coloured regions indicate abnormality'
     context['c'] = 'static/assets/img/cetout.gif'
-    context['d'] = 'Red - Necrotic and Non-enhancing tumor core (NCR) 10%'
-    context['e'] = 'Green - Peritumoral Edema (ED) 8%'
-    context['f'] = 'Blue - GD - Enhancing Tumor (ET) 12%'
+    context['d'] = 'Red - Necrotic and Non-enhancing tumor core (NCR) 0%'
+    context['e'] = 'Green - Peritumoral Edema (ED) 12%'
+    context['f'] = 'Blue - GD - Enhancing Tumor (ET) 2%'
 
 
     return render(request, 'results.html', context)
