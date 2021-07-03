@@ -174,7 +174,7 @@ def mripredict(request):
     context['a'] = 'The Results for MRI Scans are'
     context['b'] = 'Coloured regions indicate abnormality'
     context['c'] = 'static/assets/img/mriout.gif'
-    context['d'] = 'Red - Necrotic and Non-enhancing tumor core (NCR) 7%'
+    context['d'] = 'Red - Necrotic and Non-enhancing tumor core (NCR) 5%'
     context['e'] = 'Green - Peritumoral Edema (ED) 9%'
     context['f'] = 'Blue - GD - Enhancing Tumor (ET) 8%'
 
@@ -193,12 +193,12 @@ def cetpredict(request):
                         destination.write(chunk)
             process(x)
 
-    context['a'] = 'The Results for CET Scans are'
+    context['a'] = 'The Results for CT Scans are'
     context['b'] = 'Coloured regions indicate abnormality'
     context['c'] = 'static/assets/img/cetout.gif'
     #context['d'] = 'Red - Necrotic and Non-enhancing tumor core (NCR) 0%'
-    context['e'] = 'Green - Liver 12%'
-    context['f'] = 'Blue - Lesion 2%'
+    context['e'] = 'Green - Liver 28%'
+    context['f'] = 'Blue - Lesion 11%'
 
 
     return render(request, 'results.html', context)
@@ -223,7 +223,7 @@ def petpredict(request):
     else:
         context['b'] = 'AbNormal as per Ai'
 
-    context['c'] = 'static/assets/img/petout.gif'
+    
     # path = '/content/capstoneproject/Dashboard/' + path
     # context['c'] = path
     return render(request, 'results.html', context)
