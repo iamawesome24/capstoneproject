@@ -3,9 +3,9 @@ import numpy as np
 import SimpleITK as sitk
 import os
 
-from conv_blocks import *
-from losses import *
-from utils import *
+from .conv_blocks import *
+from .losses import *
+from .utils import *
 
 from tensorflow.keras.mixed_precision import experimental as mixed_precision
 policy = mixed_precision.Policy('mixed_float16')
@@ -17,10 +17,15 @@ width = 160 # 240
 channel_names = ['_t1.', '_t2.', '_t1ce.', '_flair.']   # do not change order
 # T1-weighted (T1), post-contrast T1-weighted (T1ce), T2-weighted (T2), and T2 Fluid Attenuated Inversion Recovery (FLAIR)
 out_channels = ['empty', 'ncr', 'ed', 'et']
+# necrotic and non-enhancing tumor core (NCR), peritumoral edema (ED), GD-enhancing tumor(ET)
+
+# ET : available
+# TC : ET + NCR
+# WT : ET + NCR + ED
 
 # model.save("model-best.h5", include_optimizer=False)
 
-model = tf.keras.models.load_model("dl//model-best.h5", custom_objects={'ConvNorm': ConvNorm,
+model = tf.keras.models.load_model("model-best.h5", custom_objects={'ConvNorm': ConvNorm,
                                                                     'NormAct': NormAct,
                                                                     'AttnBottleneckBlock': AttnBottleneckBlock,
                                                                     'BasicBlock': BasicBlock,
@@ -46,7 +51,6 @@ def sort_path_list(path_list):
     return ret
 
 def read_img(path):
-    print(path)
     img = sitk.GetArrayFromImage(sitk.ReadImage(path))
     img = tf.convert_to_tensor(img, dtype=tf.float32)
     scale = tf.reduce_max(img)/2
@@ -74,7 +78,6 @@ def make_gif(img, pred, fname, alpha = 0.5):  # [C, D, H, W]
     img = img * alpha
     img = np.stack((img,)*3, axis=-1)
     pred = pred.transpose(1,2,3,0)          # [D, H, W, C]
-    pred[...,0] = 0
     with imageio.get_writer(fname, mode='I', fps=10) as writer:
         p_images = (img + pred*(1-alpha)).astype(np.uint8)
         for i in p_images:
@@ -83,21 +86,9 @@ def make_gif(img, pred, fname, alpha = 0.5):  # [C, D, H, W]
 def process_pipeline(paths, fname="out.gif"):
     imgs = load_img(paths.copy())[None,:]      # add batch dimension
     imgs = final_augmentation(imgs)
-    print(imgs.shape)
-    preds = model(imgs)[0,1:].numpy()
-    img = imgs[0,1].numpy()
+    preds = model(imgs)[0,1:]._numpy()
+    img = imgs[0,1]._numpy()
     mn = img.min()
     mx = img.max()
     img = (img - mn)/(mx - mn) * 255
     make_gif(img, preds*255, fname=fname)
-
-
-
-
-
-
-
-
-
-
-
