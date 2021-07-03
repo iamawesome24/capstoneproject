@@ -161,7 +161,7 @@ class OverwriteStorage(FileSystemStorage):
 
 def mripredict(request):
     context={}
-    paths = []
+    paths = ['/content/capstoneproject/Dashboard//media/file_1', '/content/capstoneproject/Dashboard//media/file_2', '/content/capstoneproject/Dashboard//media/file_3', '/content/capstoneproject/Dashboard//media/file_4']
     print("*******************************")
     fs = OverwriteStorage()
     for count, x in enumerate(request.FILES.getlist("filelocation1")):
