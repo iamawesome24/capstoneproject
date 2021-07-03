@@ -3,9 +3,9 @@ import numpy as np
 import SimpleITK as sitk
 import os
 
-from .conv_blocks import *
-from .losses import *
-from .utils import *
+from conv_blocks import *
+from losses import *
+from utils import *
 
 from tensorflow.keras.mixed_precision import experimental as mixed_precision
 policy = mixed_precision.Policy('mixed_float16')
@@ -25,7 +25,7 @@ out_channels = ['empty', 'ncr', 'ed', 'et']
 
 # model.save("model-best.h5", include_optimizer=False)
 
-model = tf.keras.models.load_model("model-best.h5", custom_objects={'ConvNorm': ConvNorm,
+model = tf.keras.models.load_model("dl/model-best.h5", custom_objects={'ConvNorm': ConvNorm,
                                                                     'NormAct': NormAct,
                                                                     'AttnBottleneckBlock': AttnBottleneckBlock,
                                                                     'BasicBlock': BasicBlock,
